@@ -1,0 +1,36 @@
+name: GitHub Pages deploy
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Node.js 🔧
+      uses: actions/setup-node@v1
+      with:
+        node-version: '15.x'
+
+    - name: Checkout 🛎️
+      uses: actions/checkout@master
+
+    - name: Install dependencies 🔧
+      run: npm install
+
+    - name: Run Test 🔨
+      run: npm run test
+
+    - name: Run test and build 👷
+      run: npm run build
+
+    - name: Deploy to GitHub Pages  🚀
+      uses: JamesIves/github-pages-deploy-action@4.1.1
+      with:
+        token: ${{ secrets.GH_TOKEN }}
+        folder: build
+        branch: gh-pages
+
